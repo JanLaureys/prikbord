@@ -34,23 +34,23 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(session({secret: 'Narwhals narwhals swimming in the ocean, causing a commotion cause they are so awesome'}));
+app.use(session({secret: 'Narwhals narwhals swimming in the ocean, causing a commotion cause they are so awesome', resave: true, saveUninitialized: true}));
 
 app.use(function (req, res, next) {
   req.db = db;
   next();
 });
 
+console.log('Prikbord is up and running. Checkout localhost:3000');
+
 app.use(cookieParser());
 
 // Defining routes
-app.use('/', routes);
+app.use('/index', routes);
 app.use('/users', users);
 app.use('/messages', messages);
 app.use('/admin', admin);
 app.use('/search', search);
-
-// Comment change to check if github is ok.
 
 
 // catch 404 and forward to error handler

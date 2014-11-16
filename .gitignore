@@ -29,3 +29,11 @@ node_modules
 .idea/prikbord.iml
 .idea/watcherTasks.xml
 .idea/webResources.xml
+prikbord/data/journal
+prikbord/data/local.0
+prikbord/data/local.ns
+prikbord/data/mongod.lock
+prikbord/data/prikbord.0
+prikbord/data/prikbord.ns
+prikbord/data/test.0
+prikbord/data/test.ns

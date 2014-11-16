@@ -1,0 +1,38 @@
+extends ../layout
+block content
+  .row
+    .col-lg-12
+      h1.page-header Gebruikers bewerken
+      .row
+        .col-lg-4
+          .row
+            .col-lg-12.page-users
+              .list-group
+                .list-group
+                  each user, i in users
+                    if user.admin
+                      a.list-group-item(href="/admin/users/#{user._id}")
+                        i.fa.fa-user
+                        | &nbsp; #{user.username}
+                        span.label.label-info.pull-right Admin
+                    else
+                      a.list-group-item(href="/admin/users/#{user._id}")
+                        i.fa.fa-user
+                        | &nbsp; #{user.username}
+        if user
+          .col-lg-8
+            .row
+              .col-lg-12
+                .panel.panel-default
+                  .panel-heading
+                    i.fa.fa-user
+                    | &nbsp;
+                    strong  #{user.username}
+                    a.pull-right(href="/admin/users")
+                      i.fa.fa-times
+                  .panel-body
+                  .panel-footer
+                    button.btn.btn-primary(data-action="save-user", data-user="#{user._id}") Opslaan
+                    button.btn.btn-danger.pull-right(data-action="remove-user", data-user="#{user._id}")
+                      i.fa.fa-trash-o
+

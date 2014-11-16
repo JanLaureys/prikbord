@@ -1,0 +1,33 @@
+extends layout
+
+block content
+  .row
+    .col-lg-12
+      if search_query
+        h1.page-header Zoeken naar "#{search_query}"
+      else
+        h1.page-header Alle berichten
+  .row
+    .col-lg-12.page-messages
+      each message, i in messages
+        .panel.panel-default.message(data-message="#{message._id}")
+          .panel-heading
+            | Bericht van
+            strong &nbsp;#{message.from.username}
+            |  aan
+            strong &nbsp;#{message.to.username}
+            |  op #{moment(message.date).format("DD-MM-YYYY HH:mm")}
+          .panel-body
+            p
+              | #{message.message}
+          .panel-footer
+            if message.resolved
+              a.btn.btn-success Afgehandeld
+            else
+              a.btn.btn-default(data-action="resolve") Afhandelen
+  //
+     /.row
+  //
+     /#page-wrapper
+  //
+     /#wrapper

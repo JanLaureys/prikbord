@@ -50,6 +50,8 @@ app.use('/messages', messages);
 app.use('/admin', admin);
 app.use('/search', search);
 
+// Comment change to check if github is ok.
+
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

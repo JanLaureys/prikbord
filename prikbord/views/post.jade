@@ -16,8 +16,11 @@ block content
                 i.fa.fa-user
                 | &nbsp; #{user.username}
         br
-        div.form-group-lg
-          label Boodschap
-          textarea(name="message", placeholder="Wat wilt u zeggen ?").form-control
+        div.row
+          div.form-group-lg.col-lg-6
+            label Boodschap
+            textarea(name="message", placeholder="Wat wilt u zeggen ?").form-control
         br
-        button(type="submit").btn.btn-default Verzenden
+        div.row
+          div.col-lg-12
+            button(type="submit").btn.btn-default Verzenden

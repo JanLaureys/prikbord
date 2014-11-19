@@ -5,13 +5,14 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-var routes = require('./routes/index');
-var users = require('./routes/users');
-var messages = require('./routes/messages');
-var admin = require('./routes/admin');
-var search = require('./routes/search');
-
 var mongo = require('mongodb');
+
+var site = require('./middleware/index');
+var users = require('./middleware/users');
+var messages = require('./middleware/messages');
+var search = require('./middleware/search');
+var admin = require('./middleware/admin');
+var auth = require('./middleware/authentication');
 
 var monk = require('monk');
 var db = monk('localhost:27017/prikbord');
@@ -46,11 +47,42 @@ console.log('Prikbord is up and running. Checkout localhost:3000');
 app.use(cookieParser());
 
 // Defining routes
-app.use('/index', routes);
-app.use('/users', users);
-app.use('/messages', messages);
-app.use('/admin', admin);
-app.use('/search', search);
+
+app.all('/', auth.checkLogin);
+app.all('/messages/*', auth.checkLogin);
+app.all('/users/*', auth.checkLogin);
+app.all('/search/*', auth.checkLogin);
+app.all('/admin/*', auth.checkLogin);
+app.all('/admin/*', auth.checkAdmin);
+
+// INDEX AND LOGIN
+app.get('/', site.index);
+app.get('/login', site.loginForm);
+app.get('/login/:uid', site.login);
+
+
+// MESSAGE ROUTES
+app.get('/messages/new', messages.new.form);
+app.post('/messages/new', messages.new.post);
+app.get('/messages/unresolved', messages.unresolved.view);
+app.get('/messages/unresolved/count', messages.unresolved.count);
+app.post('/messages/resolve', messages.resolve);
+
+// USER ROUTES
+app.get('/users', users.all);
+
+// SEARCH ROUTES
+app.get('/search/:query', search.results);
+app.get('/search/', search.all);
+app.post('/search/submit', search.execute);
+
+// ADMIN ROUTES
+
+app.get('/admin/users', admin.users.all);
+app.get('/admin/users/:uid', admin.users.view);
+
+
+// Defining routes and shit
 
 
 // catch 404 and forward to error handler

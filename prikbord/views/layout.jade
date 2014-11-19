@@ -24,38 +24,37 @@ html(lang='en')
       script(src='https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js')
       script(src='https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js')
   body
+    include ./mixins.jade
     #wrapper
       //
          Navigation 
       nav.navbar.navbar-default.navbar-static-top(role='navigation', style='margin-bottom: 0;')
-        .navbar-header
+        .navbar-headercustom-search-form.clearfix
           button.navbar-toggle(type='button', data-toggle='collapse', data-target='.navbar-collapse')
             span.sr-only Toggle navigation
             span.icon-bar
             span.icon-bar
             span.icon-bar
           a.navbar-brand(href='/') Prikbord
+          .col-lg-4.pull-right
+            form(action="/search/submit", method="POST")
+              .input-group.custom-search-form
+                if search_query
+                  input.form-control(type='text', name="search_query", placeholder='Zoeken...', value=search_query)
+                else
+                  input.form-control(type='text', name="search_query", placeholder='Zoeken...')
+                span.input-group-btn
+                  button.btn.btn-default(type='submit')
+                    i.fa.fa-search
         .navbar-default.sidebar(role='navigation')
           .sidebar-nav.navbar-collapse
             ul#side-menu.nav
-              li.sidebar-search
-                form(action="/search/submit", method="POST")
-                  .input-group.custom-search-form
-                    if search_query
-                      input.form-control(type='text', name="search_query", placeholder='Zoeken...', value=search_query)
-                    else
-                      input.form-control(type='text', name="search_query", placeholder='Zoeken...')
-                    span.input-group-btn
-                      button.btn.btn-default(type='submit')
-                        i.fa.fa-search
-                //
-                   /input-group
               li.sidebar-datepicker
                 div.datepicker
               li
                 a.active(href='/')
-                  i.fa.fa-envelope-o.fa-fw
-                  | &nbsp; Berichten
+                  i.fa.fa-home.fa-fw
+                  | &nbsp; Home
               li
                 a(href="/messages/new")
                   i.fa.fa-envelope-o.fa-fw
@@ -64,6 +63,8 @@ html(lang='en')
                 a(href='/users')
                   i.fa.fa-user
                   | &nbsp; Gebruikers
+                +link('http://www.google.com')
+                +link('Banaan')
       #page-wrapper
         block content
 

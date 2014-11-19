@@ -1,0 +1,34 @@
+mixin link(goto)
+  a(href=goto) Banaan
+
+mixin message(message)
+  .panel.panel-success.message(data-message="#{message._id}")
+    .panel-heading
+      | Bericht van
+      strong &nbsp;#{message.from.username}
+      | aan
+      strong &nbsp;#{message.to.username}
+      | op #{moment(message.date).format("DD-MM-YYYY HH:mm")}
+    .panel-body
+      p
+        | #{message.message}
+    .panel-footer.clearfix
+      a.btn.btn-default(data-action="comment") Reageren
+      if message.resolved
+        a.pull-right.btn.btn-success Afgehandeld
+      else
+        a.pull-right.btn.btn-default(data-action="resolve") Afhandelen
+
+mixin comment(comment)
+  .panel-body.panel-comments
+  .row
+    .col-lg-8
+      .panel.panel-default
+        .panel-heading
+          | Commentaar van
+          strong &nbsp;#{message.from.username}
+          | aan
+          strong &nbsp;#{message.to.username}
+          | op #{moment(message.date).format("DD-MM-YYYY HH:mm")}
+        .panel-body
+          p.comment-body Ik ben de body van deze comment

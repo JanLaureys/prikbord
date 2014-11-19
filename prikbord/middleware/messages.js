@@ -105,9 +105,7 @@ exports.unresolved = {
 
 exports.resolve = function(req, res){
 
-  var db = req.db;
-
-  var messages = db.get('messages');
+  var messages = req.db.get('messages');
   var message = req.body.message;
 
   messages.updateById(message, {$set: {resolved: true}}, function(err, doc){
@@ -118,4 +116,27 @@ exports.resolve = function(req, res){
       res.json({"error": false});
     }
   });
-}
+};
+
+exports.comments = {
+
+  add: function(req, res){
+
+    var messages = req.db.get('messages');
+    var mid = req.params.mid;
+    var user = req.session.user;
+
+    var date  = new Date();
+
+
+    messages.updateById(mid, {$push: {comments: {
+      user: user,
+      comment: req.body.comment,
+      date: date.toJSON()
+    }}}, function(err, doc){
+      console.log(doc);
+      res.json(doc);
+    });
+
+  }
+};

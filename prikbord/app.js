@@ -67,6 +67,7 @@ app.post('/messages/new', messages.new.post);
 app.get('/messages/unresolved', messages.unresolved.view);
 app.get('/messages/unresolved/count', messages.unresolved.count);
 app.post('/messages/resolve', messages.resolve);
+app.post('/messages/:mid/comment', messages.comments.add);
 
 // USER ROUTES
 app.get('/users', users.all);
@@ -80,10 +81,6 @@ app.post('/search/submit', search.execute);
 
 app.get('/admin/users', admin.users.all);
 app.get('/admin/users/:uid', admin.users.view);
-
-
-// Defining routes and shit
-
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

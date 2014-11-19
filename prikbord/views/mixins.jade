@@ -18,17 +18,19 @@ mixin message(message)
         a.pull-right.btn.btn-success Afgehandeld
       else
         a.pull-right.btn.btn-default(data-action="resolve") Afhandelen
+      form(action="/messages/#{message._id}/comment").addComment
+        textarea(name="comment").col-lg-4.form-control
+        button(type="submit").btn.btn-default Reageren
+      each comment, c in message.comments
+        +comment(comment)
 
 mixin comment(comment)
-  .panel-body.panel-comments
-  .row
-    .col-lg-8
-      .panel.panel-default
-        .panel-heading
-          | Commentaar van
-          strong &nbsp;#{message.from.username}
-          | aan
-          strong &nbsp;#{message.to.username}
-          | op #{moment(message.date).format("DD-MM-YYYY HH:mm")}
-        .panel-body
-          p.comment-body Ik ben de body van deze comment
+    .row
+      .col-lg-8
+        .panel.panel-default
+          .panel-heading
+            | Commentaar van
+            strong &nbsp;#{comment.user.username}
+            | op #{moment(comment.date).format("DD-MM-YYYY HH:mm")}
+          .panel-body
+            p.comment-body #{comment.comment}

@@ -5,29 +5,17 @@ block content
     .col-lg-12
       if(title)
         h1.page-header= title
+          a(href="/messages/unresolved").btn.btn-danger.pull-right
+            span.unresolved-count &nbsp;
+            | &nbsp;onafgehandelde berichten
       else
         h1.page-header Home
-  .row
-    a(href="/messages/unresolved")
-      .col-lg-3.col-md-6.col-sm-6
-        .panel.panel-red
-          .panel-heading
-            .row
-              .col-xs-3
-                i.fa.fa-flag-o.fa-5x
-              .col-xs-9.text-right
-                .huge.unresolved-count &nbsp;
-                div Onafgehandelde berichten
-    .col-lg-3.col-md-6.col-sm-6
-      .panel.panel-primary
-        .panel-heading
-          .row
-            .col-xs-3
-              i.fa.fa-comments.fa-5x
-            .col-xs-9.text-right
-              .huge 26
-              div Nieuwe commentaren
+          a(href="/messages/unresolved").btn.btn-danger.pull-right
+            span.unresolved-count &nbsp;
+            | &nbsp;onafgehandelde berichten
   .row
     .col-lg-12.page-messages
       each message, i in messages
         +message(message, user)
+      if(messages.length < 1)
+        .alert.alert-info Er werden geen berichten gevonden voor de huidige criteria.

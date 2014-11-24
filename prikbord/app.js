@@ -90,6 +90,7 @@ app.post('/search/submit', search.execute);
 app.get('/notifications/html', notifications.get);
 app.get('/notifications/json', notifications.getJSON);
 app.post('/notifications/showOnDesktop', notifications.shownOnDesktop);
+app.get('/notifications/clear', notifications.clear);
 
 // ADMIN ROUTES
 

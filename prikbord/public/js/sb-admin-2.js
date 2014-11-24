@@ -84,6 +84,14 @@ $(function() {
     }, 'JSON');
   });
 
+  $('.dropdown').on('click', '.clearNotifications', function(e){
+    e.preventDefault();
+    alert('LOL');
+    $.get('/notifications/clear', function(data){
+      $('.dropdown-alerts').html(data);
+    });
+  });
+
   // GET NOTIFICATIONS
 
   var poll = function(){

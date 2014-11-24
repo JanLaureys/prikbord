@@ -67,8 +67,17 @@ html(lang='en')
                   | &nbsp; Home
               li
                 a(href="/messages/new")
-                  i.fa.fa-envelope-o.fa-fw
+                  i.fa.fa-plus.fa-fw
                   | &nbsp; Nieuw bericht
+              li
+                a(href="/search")
+                  i.fa.fa-search.fa-fw
+                  | &nbsp; Zoeken
+              li
+                a(href="/messages/unresolved")
+                  i.fa.fa-flag.fa-fw
+                  | &nbsp; Af te handelen
+                  span.badge.unresolved-count.pull-right
       #page-wrapper
         block content
 

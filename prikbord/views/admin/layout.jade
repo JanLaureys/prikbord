@@ -7,14 +7,11 @@ html(lang='en')
     meta(name='description', content='')
     meta(name='author', content='')
     title Prikbord
-
-
     link(href='/stylesheets/bootstrap.min.css', rel='stylesheet')
     link(href='/stylesheets/sb-admin-2.css', rel='stylesheet')
     link(href='/stylesheets/datepicker3.css', rel='stylesheet')
     link(href='/stylesheets/style.css', rel='stylesheet')
     link(href='/fa/css/font-awesome.min.css', rel='stylesheet')
-
     link(rel='shortcut icon', href='/favicon.ico', type='image/x-icon')
     //
        HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries
@@ -24,7 +21,6 @@ html(lang='en')
       script(src='https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js')
       script(src='https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js')
   body
-    include ./mixins.jade
     #wrapper
       //
          Navigation 
@@ -35,15 +31,7 @@ html(lang='en')
             span.icon-bar
             span.icon-bar
             span.icon-bar
-          a.navbar-brand(href='/') Prikbord
-          ul.nav.navbar-top-links.navbar-right
-            li.dropdown
-              a.dropdown-toggle(data-toggle="dropdown", href="#")
-                i.fa.fa-bell.fa-fw
-                i.fa.fa-caret-down
-              ul.dropdown-menu.dropdown-alerts
-                li
-                  a Geen meldingen
+          a.navbar-brand(href='/') Prikbord: Admin
           .col-lg-4.pull-right
             form(action="/search/submit", method="POST")
               .input-group.custom-search-form
@@ -54,8 +42,6 @@ html(lang='en')
                 span.input-group-btn
                   button.btn.btn-default(type='submit')
                     i.fa.fa-search
-
-
         .navbar-default.sidebar(role='navigation')
           .sidebar-nav.navbar-collapse
             ul#side-menu.nav
@@ -64,14 +50,13 @@ html(lang='en')
               li
                 a.active(href='/')
                   i.fa.fa-home.fa-fw
-                  | &nbsp; Home
+                  | &nbsp; Admin
               li
-                a(href="/messages/new")
-                  i.fa.fa-envelope-o.fa-fw
-                  | &nbsp; Nieuw bericht
+                a(href='/admin/users')
+                  i.fa.fa-user
+                  | &nbsp; Gebruikers
       #page-wrapper
         block content
-
     //  jQuery Version 1.11.0
     script(src='/js/jquery-1.11.0.js')
     //  Bootstrap Core JavaScript
@@ -80,14 +65,9 @@ html(lang='en')
     script(src='/js/plugins/metisMenu/metisMenu.min.js')
     //  Bootstrap datepicker
     script(src='/js/plugins/bootstrap-datepicker/bootstrap-datepicker.js')
-    // Library for providing desktop notifications
-    script(src='/js/desktop-notify-min.js')
     //  Custom Theme JavaScript
     script(src='/js/sb-admin-2.js')
     //  Jquery cookie
     script(src='/js/plugins/cookie/jquery.cookie.js')
     // Moment
     script(src='/js/plugins/moment/moment-with-locales.js')
-
-
-

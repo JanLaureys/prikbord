@@ -6,21 +6,20 @@ block content
   .row
     .col-lg-12
       form(method="post")
+        div.row
+          div.form-group-lg.col-lg-6
+            textarea(name="message", placeholder="Schrijf hier uw bericht").form-control
+        br
         div.form-group-lg
-          label Ontvanger
+          label Aan
           br
           div.btn-group(data-toggle="buttons")
             each user, i in users
-              label.btn.btn-primary
+              label.btn.btn-default
                 input(type="radio", name="to", value="#{user._id}")
                 i.fa.fa-user
                 | &nbsp; #{user.username}
         br
         div.row
-          div.form-group-lg.col-lg-6
-            label Boodschap
-            textarea(name="message", placeholder="Wat wilt u zeggen ?").form-control
-        br
-        div.row
           div.col-lg-12
-            button(type="submit").btn.btn-default Verzenden
+            button(type="submit").btn.btn-primary Verzenden

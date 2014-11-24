@@ -1,36 +1,56 @@
 mixin link(goto)
   a(href=goto) Banaan
 
-mixin message(message)
-  .panel.panel-success.message(data-message="#{message._id}")
+mixin message(message, user)
+  .panel.panel-info.message(data-message="#{message._id}")
     .panel-heading
-      | Bericht van
       strong &nbsp;#{message.from.username}
-      | aan
-      strong &nbsp;#{message.to.username}
-      | op #{moment(message.date).format("DD-MM-YYYY HH:mm")}
+      if(message.to)
+        | &nbsp;aan
+        strong &nbsp;#{message.to.username}
+      .pull-right
+        a(href="/messages/detail/#{message._id}")
+          span(title='#{moment(message.date).format("DD-MM-YYYY HH:mm")}')
+            <i class="fa fa-clock-o"></i>&nbsp;#{moment(message.date).fromNow()}
     .panel-body
       p
         | #{message.message}
     .panel-footer.clearfix
-      a.btn.btn-default(data-action="comment") Reageren
+      if message.comments
+        button.btn.btn-default(data-toggle="collapse", data-target="#comments-#{message._id}") #{message.comments.length} reacties
+      else
+        button.btn.btn-default(data-toggle="collapse", data-target="#comments-#{message._id}") 0 reacties
       if message.resolved
         a.pull-right.btn.btn-success Afgehandeld
       else
-        a.pull-right.btn.btn-default(data-action="resolve") Afhandelen
-      form(action="/messages/#{message._id}/comment").addComment
-        textarea(name="comment").col-lg-4.form-control
-        button(type="submit").btn.btn-default Reageren
-      each comment, c in message.comments
-        +comment(comment)
+        if(message.to)
+          if(message.to._id == user._id)
+            a.pull-right.btn.btn-default(data-action="resolve") Afhandelen
+          else
+            span.pull-right Nog niet afgehandeld
+    .panel-footer(id="comments-#{message._id}").collapse
+      .row
+        .col-lg-8
+          form(action="/messages/#{message._id}/comment").addComment
+            .row
+              .col-lg-11
+                textarea(name="comment", placeholder="Een nieuwe reactie schrijven...").form-control
+              .col-lg-1
+                button(type="submit").btn.btn-default Reageren
+      .row
+        .col-lg-8
+          if(message.comments)
+            br
+            each comment, c in message.comments
+              +comment(comment)
 
 mixin comment(comment)
     .row
-      .col-lg-8
+      .col-lg-12
         .panel.panel-default
           .panel-heading
-            | Commentaar van
             strong &nbsp;#{comment.user.username}
-            | op #{moment(comment.date).format("DD-MM-YYYY HH:mm")}
+            .pull-right
+              <i class="fa fa-clock-o"></i>&nbsp;#{moment(comment.date).format("DD-MM-YYYY HH:mm")}
           .panel-body
             p.comment-body #{comment.comment}

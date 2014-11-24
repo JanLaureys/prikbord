@@ -9,6 +9,8 @@ exports.index = function(req, res) {
 
   var collection = req.db.get('messages');
 
+  var user = req.session.user;
+
   var date_start;
   var date_end;
 
@@ -28,7 +30,8 @@ exports.index = function(req, res) {
     res.render('index', {
       "messages" : docs,
       "title": "Prikbord",
-      "moment": moment
+      "moment": moment,
+      "user": user
     });
   });
 }
@@ -48,10 +51,13 @@ exports.loginForm = function(req, res){
 exports.login = function(req,res){
   var collection = req.db.get('users');
 
-  console.log(req.params.uid);
-
   collection.findOne({'_id': req.params.uid}, {}, function(e, doc){
     req.session.user = doc;
     res.redirect('/');
   });
+}
+
+exports.logout = function(req, res){
+  req.session.destroy();
+  res.redirect('/');
 }

@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 var moment = require('moment');
+var notifications = require('./notifications');
 
 /*
  * /messages/new: Page where you can post new messages. Totally crazy and pimping aah yeah
@@ -39,7 +40,7 @@ exports.new = {
             date: date.toJSON(),
             resolved: false,
             message: message
-          }
+          };
           insertMessage(fields);
         } else {
           console.log(err);
@@ -51,7 +52,7 @@ exports.new = {
         date: date.toJSON(),
         resolved: false,
         message: message
-      }
+      };
       insertMessage(fields);
     }
 
@@ -67,10 +68,23 @@ exports.new = {
           res.send("There was a problem adding the information to the database.");
         }
         else {
-          // If it worked, set the header so the address bar doesn't still say /adduser
-          res.location("/");
-          // And forward to success page
-          res.redirect("/");
+          // Create a notification and then go further
+          if(doc.to){
+            notifications.create(req, {
+              type: "fa fa-envelope-o",
+              to: doc.to._id,
+              message: "Bericht van " + doc.from.username,
+              link : "/messages/detail/" + doc._id,
+              seen: false,
+              date: date.toJSON(),
+              showOnDesktop: false
+            }, function(){
+              // redirect to the homepage
+              res.redirect("/");
+            });
+          } else {
+            res.redirect("/");
+          }
         }
       });
     }
@@ -87,7 +101,8 @@ exports.unresolved = {
       res.render('index', {
         "messages" : docs,
         "title": "Onafgehandelde berichten",
-        "moment": moment
+        "moment": moment,
+        "user": user
       });
     });
   },
@@ -118,6 +133,22 @@ exports.resolve = function(req, res){
   });
 };
 
+exports.detail = function(req, res){
+
+  var messages = req.db.get('messages');
+  var mid = req.params.mid;
+
+  var user = req.session.user;
+
+  messages.findById(mid, function(e, doc){
+    res.render('message', {
+      message: doc,
+      moment: moment,
+      user: user
+    });
+  });
+}
+
 exports.comments = {
 
   add: function(req, res){
@@ -125,18 +156,14 @@ exports.comments = {
     var messages = req.db.get('messages');
     var mid = req.params.mid;
     var user = req.session.user;
-
     var date  = new Date();
-
 
     messages.updateById(mid, {$push: {comments: {
       user: user,
       comment: req.body.comment,
       date: date.toJSON()
     }}}, function(err, doc){
-      console.log(doc);
       res.json(doc);
     });
-
   }
 };

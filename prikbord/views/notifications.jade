@@ -1,0 +1,19 @@
+if notifications.length > 0
+  each notification, i in notifications
+    li.clearfix(data-notification="#{notification._id}")
+      a(href=notification.link).clearfix
+        div
+          i(class=notification.type)
+          | &nbsp;#{notification.message}
+          br
+          span.text-muted.small.pull-left
+            i.fa.fa-clock-o
+            | &nbsp;#{moment(notification.date).fromNow()}
+    li.divider
+  li.text-center
+    a(href="/notifications/clear").clearNotifications
+      strong Alle meldingen wissen
+else
+  li
+    a(href="#")
+      div Geen meldingen

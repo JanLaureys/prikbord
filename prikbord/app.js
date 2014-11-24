@@ -13,9 +13,13 @@ var messages = require('./middleware/messages');
 var search = require('./middleware/search');
 var admin = require('./middleware/admin');
 var auth = require('./middleware/authentication');
+var notifications = require('./middleware/notifications');
 
 var monk = require('monk');
 var db = monk('localhost:27017/prikbord');
+
+// Run update on multiple docs
+db.options.multi =true;
 
 var session = require('express-session')
 
@@ -50,8 +54,11 @@ app.use(cookieParser());
 
 app.all('/', auth.checkLogin);
 app.all('/messages/*', auth.checkLogin);
+app.all('/message/*', auth.checkLogin);
+app.all('/logout', auth.checkLogin);
 app.all('/users/*', auth.checkLogin);
 app.all('/search/*', auth.checkLogin);
+app.all('/notifications/*', auth.checkLogin);
 app.all('/admin/*', auth.checkLogin);
 app.all('/admin/*', auth.checkAdmin);
 
@@ -59,10 +66,12 @@ app.all('/admin/*', auth.checkAdmin);
 app.get('/', site.index);
 app.get('/login', site.loginForm);
 app.get('/login/:uid', site.login);
+app.get('/logout', site.logout);
 
 
 // MESSAGE ROUTES
 app.get('/messages/new', messages.new.form);
+app.get('/messages/detail/:mid', messages.detail);
 app.post('/messages/new', messages.new.post);
 app.get('/messages/unresolved', messages.unresolved.view);
 app.get('/messages/unresolved/count', messages.unresolved.count);
@@ -77,8 +86,14 @@ app.get('/search/:query', search.results);
 app.get('/search/', search.all);
 app.post('/search/submit', search.execute);
 
+// NOTIFICATION ROUTES
+app.get('/notifications/html', notifications.get);
+app.get('/notifications/json', notifications.getJSON);
+app.post('/notifications/showOnDesktop', notifications.shownOnDesktop);
+
 // ADMIN ROUTES
 
+app.get('/admin', admin.index);
 app.get('/admin/users', admin.users.all);
 app.get('/admin/users/:uid', admin.users.view);
 

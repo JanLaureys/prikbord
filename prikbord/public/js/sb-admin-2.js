@@ -84,4 +84,41 @@ $(function() {
     }, 'JSON');
   });
 
+  // GET NOTIFICATIONS
+
+  var poll = function(){
+    $.get('/notifications/html', function(data){
+      $('.dropdown-alerts').html(data);
+    });
+
+    Notification.requestPermission(function(status) {
+      if(status == "granted"){
+        var notifications = [];
+        $.getJSON('/notifications/json', function(data){
+          $(data).each(function(i, item){
+            var n = new Notification(item.message, {body:  moment(item.date).fromNow()});
+            $(n).click(function(e){
+              e.preventDefault();
+              window.focus();
+              window.location.href = item.link;
+            });
+            notifications.push(n);
+            // this also shows the notification
+          });
+          if(data.length > 0){
+            $.post('/notifications/showOnDesktop', function(data){
+              setTimeout(function(){poll();}, 1000 * 1800);
+            }, 'json');
+          }
+        });
+      }
+    });
+  };
+
+  poll();
+
+
+  // Desktop notifications and shit
+
+
 });

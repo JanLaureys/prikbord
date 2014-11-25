@@ -46,7 +46,7 @@ app.use(function (req, res, next) {
   next();
 });
 
-console.log('Prikbord is up and running. Checkout localhost:3000');
+
 
 app.use(cookieParser());
 
@@ -129,5 +129,6 @@ app.use(function (err, req, res, next) {
   });
 });
 
+console.log('Prikbord is up and running. Checkout localhost:3000');
 
 module.exports = app;

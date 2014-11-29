@@ -1,5 +1,6 @@
 var express = require('express');
 var moment = require('moment');
+moment.locale('nl');
 
 exports.create = function(req, notification, next){
 

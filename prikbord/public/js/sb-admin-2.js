@@ -1,7 +1,6 @@
 $(function() {
 
     $('#side-menu').metisMenu();
-
 });
 
 //Loads the correct sidebar on window load,
@@ -27,6 +26,7 @@ $(function() {
     });
 
     var calendarDate = moment();
+    calendarDate.locale('nl');
 
     var datePicker = $('.datepicker').datepicker({
       format: "dd/mm/yyyy",
@@ -39,7 +39,6 @@ $(function() {
       var date = e.date;
       $.cookie('date', date.toJSON(), {expires: 1});
       // TODO: Reload messages
-
       if($('.page-messages').length > 0){
         document.location.reload(true);
       }
@@ -86,13 +85,14 @@ $(function() {
 
   $('.dropdown').on('click', '.clearNotifications', function(e){
     e.preventDefault();
-    alert('LOL');
     $.get('/notifications/clear', function(data){
-      $('.dropdown-alerts').html(data);
+      $('.dropdown-alerts').html(data);d
     });
   });
 
   // GET NOTIFICATIONS
+
+  moment.locale('nl');
 
   var poll = function(){
     $.get('/notifications/html', function(data){
@@ -104,6 +104,7 @@ $(function() {
         var notifications = [];
         $.getJSON('/notifications/json', function(data){
           $(data).each(function(i, item){
+            moment.locale('nl');
             var n = new Notification(item.message, {body:  moment(item.date).fromNow()});
             $(n).click(function(e){
               e.preventDefault();

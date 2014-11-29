@@ -4,11 +4,11 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var fs = require('fs');
 
 var mongo = require('mongodb');
 
 var site = require('./middleware/index');
-var users = require('./middleware/users');
 var messages = require('./middleware/messages');
 var search = require('./middleware/search');
 var admin = require('./middleware/admin');
@@ -21,7 +21,7 @@ var db = monk('localhost:27017/prikbord');
 // Run update on multiple docs
 db.options.multi =true;
 
-var session = require('express-session')
+var session = require('express-session');
 
 var app = express();
 
@@ -52,21 +52,27 @@ app.use(cookieParser());
 
 // Defining routes
 
-app.all('/', auth.checkLogin);
-app.all('/messages/*', auth.checkLogin);
-app.all('/message/*', auth.checkLogin);
-app.all('/logout', auth.checkLogin);
-app.all('/users/*', auth.checkLogin);
-app.all('/search/*', auth.checkLogin);
-app.all('/notifications/*', auth.checkLogin);
-app.all('/admin/*', auth.checkLogin);
-app.all('/admin/*', auth.checkAdmin);
+app.all('/login/*', auth.checkAuth);
+app.all('/login', auth.checkAuth);
+
+
+app.all('/', auth.checkAuthandLogin);
+app.all('/messages/*', auth.checkAuthandLogin);
+app.all('/message/*', auth.checkAuthandLogin);
+app.all('/logout', auth.checkAuthandLogin);
+app.all('/users/*', auth.checkAuthandLogin);
+app.all('/search/*', auth.checkAuthandLogin);
+app.all('/notifications/*', auth.checkAuthandLogin);
+app.all('/admin/*', auth.checkAuthandAdmin);
 
 // INDEX AND LOGIN
 app.get('/', site.index);
-app.get('/login', site.loginForm);
-app.get('/login/:uid', site.login);
+app.get('/login', site.identityForm);
+app.get('/login/:uid', site.identity);
+app.post('/login/admin', site.adminLogin);
 app.get('/logout', site.logout);
+app.get('/auth', site.auth);
+app.post('/auth', site.validate);
 
 
 // MESSAGE ROUTES
@@ -79,7 +85,6 @@ app.post('/messages/resolve', messages.resolve);
 app.post('/messages/:mid/comment', messages.comments.add);
 
 // USER ROUTES
-app.get('/users', users.all);
 
 // SEARCH ROUTES
 app.get('/search/:query', search.results);

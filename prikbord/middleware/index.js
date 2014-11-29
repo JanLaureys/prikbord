@@ -36,7 +36,7 @@ exports.index = function(req, res) {
   });
 }
 
-exports.loginForm = function(req, res){
+exports.identityForm = function(req, res){
   var collection = req.db.get('users');
 
   collection.find({}, function(e, docs){
@@ -48,16 +48,50 @@ exports.loginForm = function(req, res){
   });
 }
 
-exports.login = function(req,res){
+exports.identity = function(req,res){
   var collection = req.db.get('users');
 
   collection.findOne({'_id': req.params.uid}, {}, function(e, doc){
     req.session.user = doc;
     res.redirect('/');
   });
-}
+};
 
 exports.logout = function(req, res){
   req.session.destroy();
   res.redirect('/');
+};
+
+exports.auth = function(req, res){
+  res.render('auth', {});
+};
+
+exports.validate = function(req, res){
+  var collection = req.db.get('settings');
+
+  if(req.body.auth){
+    collection.findOne({'key': 'password'}, function(e, doc){
+      if(doc.value == req.body.auth){
+        req.session.auth = true;
+        res.redirect('/login');
+      } else {
+        res.render('auth', {error: "Deze code was onjuist"});
+      }
+    });
+  }
+};
+
+exports.adminLogin = function(req, res){
+  var collection = req.db.get('settings');
+
+  if(req.body.admin){
+    collection.findOne({'key': 'admin'}, function(e, doc){
+      if(doc.value == req.body.admin){
+        req.session.admin = true;
+        res.redirect('/admin');
+      } else {
+        res.redirect('/login');
+      }
+    });
+  }
 }

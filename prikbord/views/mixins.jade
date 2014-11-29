@@ -11,7 +11,11 @@ mixin message(message, user)
       .pull-right
         a(href="/messages/detail/#{message._id}")
           span(title='#{moment(message.date).format("DD-MM-YYYY HH:mm")}')
-            <i class="fa fa-clock-o"></i>&nbsp;#{moment(message.date).fromNow()}
+            i.fa.fa-clock-o
+            | &nbsp; #{moment(message.date).format("DD-MM-YYYY HH:mm")}
+            | (#{moment(message.date).fromNow()})
+
+
     .panel-body
       p
         | #{message.message}
@@ -21,13 +25,19 @@ mixin message(message, user)
       else
         button.btn.btn-default(data-toggle="collapse", data-target="#comments-#{message._id}") 0 reacties
       if message.resolved
-        a.pull-right.btn.btn-success Afgehandeld
+        a.pull-right.btn.btn-success
+          i.fa.fa-check.fa-fw
+          | &nbsp; Afgehandeld
       else
         if(message.to)
           if(message.to._id == user._id)
-            a.pull-right.btn.btn-default(data-action="resolve") Afhandelen
+            a.pull-right.btn.btn-default(data-action="resolve")
+              i.fa.fa-flag.fa-fw
+              | &nbsp; Afhandelen
           else
-            span.pull-right Nog niet afgehandeld
+            span.pull-right
+              i.fa.fa-flag.fa-fw
+              | &nbsp; Nog niet afgehandeld
     .panel-footer(id="comments-#{message._id}").collapse
       .row
         .col-lg-8

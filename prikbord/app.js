@@ -78,6 +78,7 @@ app.post('/auth', site.validate);
 // MESSAGE ROUTES
 app.get('/messages/new', messages.new.form);
 app.get('/messages/detail/:mid', messages.detail);
+app.get('/messages/edit/:mid', messages.edit);
 app.post('/messages/new', messages.new.post);
 app.get('/messages/unresolved', messages.unresolved.view);
 app.get('/messages/unresolved/count', messages.unresolved.count);

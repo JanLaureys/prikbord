@@ -51,14 +51,14 @@ $(function() {
   $('[data-action="resolve"]').on('click', function(e){
     e.preventDefault();
     var $this = $(this);
-    $this.button('Afhandelen...')
+    $this.button('Afhandelen...');
     $.post('/messages/resolve', {message: $this.closest('.message').attr('data-message')}, function(data){
       console.log(data);
       if(data.error){
         $this.removeClass('btn-default').addClass('btn-error').text('Er ging iets mis');
        console.log('Some error happened');
       } else {
-        $this.removeClass('btn-default').addClass('btn-success').text('Afgehandeld');
+        $this.removeClass('btn-defult').addClass('btn-success').html('<i class="fa fa-check fa-fw"></i>&nbsp; Afgehandeld');
       }
     });
   });
@@ -80,7 +80,7 @@ $(function() {
 
     $.post(form.attr('action'), form.serialize(), function(data){
       console.log(data);
-    }, 'JSON');
+    });
   });
 
   $('.dropdown').on('click', '.clearNotifications', function(e){

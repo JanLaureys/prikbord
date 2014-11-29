@@ -36,6 +36,8 @@ html(lang='en')
             span.icon-bar
             span.icon-bar
           a.navbar-brand(href='/') Prikbord
+            if(user)
+              | :&nbsp;#{user.username}
           ul.nav.navbar-top-links.navbar-right
             li.dropdown
               a.dropdown-toggle(data-toggle="dropdown", href="#")
@@ -74,6 +76,10 @@ html(lang='en')
                   i.fa.fa-flag.fa-fw
                   | &nbsp; Af te handelen
                   span.badge.unresolved-count.pull-right
+              li
+                a(href="/logout")
+                  i.fa.fa-sign-out.fa-fw
+                  | &nbsp; Afmelden
       #page-wrapper
         block content
 

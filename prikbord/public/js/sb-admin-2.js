@@ -73,13 +73,13 @@ $(function() {
     }
   });
 
-  $('form.addComment').submit(function(e){
+  $('#page-wrapper').on('submit', 'form.addComment', function(e){
     e.preventDefault();
 
     var form = $(this);
 
     $.post(form.attr('action'), form.serialize(), function(data){
-      console.log(data);
+      form.closest('.message').replaceWith(data);
     });
   });
 

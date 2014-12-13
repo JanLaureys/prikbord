@@ -23,6 +23,8 @@ exports.new = {
     // Set our internal DB variable
     var db = req.db;
 
+    var subject = req.body.subject;
+
     // Get our form values. These rely on the "name" attributes
     var message = req.body.message;
     var messages = db.get('messages');
@@ -38,6 +40,7 @@ exports.new = {
           var fields = {
             from: req.session.user,
             to: user,
+            subject: subject,
             date: date.toJSON(),
             resolved: false,
             message: message
@@ -172,11 +175,10 @@ exports.edit = function (req, res) {
 };
 
 exports.editSubmit = function(req, res){
-
-      var messages = req.db.get('messages');
-      var mid = req.params.mid;
-      var user = req.session.user;
-      var date = new Date();
+  var messages = req.db.get('messages');
+  var mid = req.params.mid;
+  var user = req.session.user;
+  var date = new Date();
 };
 
 exports.comments = {
@@ -199,7 +201,7 @@ exports.comments = {
     }, function (err, doc) {
       if (doc) {
         messages.findById(mid, function (err, message) {
-          res.render('message', {message: message, user: user, noLayout: true, moment: moment});
+          res.render('singleMessage', {message: message, user: user, noLayout: true, moment: moment});
         });
       }
     });

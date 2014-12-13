@@ -1,7 +1,7 @@
 mixin link(goto)
   a(href=goto) Banaan
 
-mixin message(message, user)
+mixin message(message, user, showComments)
   .panel.panel-info.message(data-message="#{message._id}")
     .panel-heading
       strong &nbsp;#{message.from.username}
@@ -15,8 +15,11 @@ mixin message(message, user)
             | &nbsp; #{moment(message.date).format("DD-MM-YYYY HH:mm")}
             | (#{moment(message.date).fromNow()})
 
-
     .panel-body
+      if message.subject
+        strong #{message.subject}
+        br
+        br
       p
         | #{message.message}
     .panel-footer.clearfix
@@ -38,7 +41,8 @@ mixin message(message, user)
             span.pull-right
               i.fa.fa-flag.fa-fw
               | &nbsp; Nog niet afgehandeld
-    .panel-footer(id="comments-#{message._id}").collapse
+    -var commentClass = (showComments && showComments == true ? 'collapse in' : 'collapse')
+    .panel-footer(id="comments-#{message._id}",class=commentClass)
       .row
         .col-lg-8
           form(action="/messages/#{message._id}/comment").addComment

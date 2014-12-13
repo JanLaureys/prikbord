@@ -174,7 +174,7 @@ exports.edit = function (req, res) {
   });
 };
 
-exports.editSubmit = function(req, res){
+exports.editSubmit = function (req, res) {
   var messages = req.db.get('messages');
   var mid = req.params.mid;
   var user = req.session.user;
@@ -206,4 +206,46 @@ exports.comments = {
       }
     });
   }
+};
+
+exports.update = function (req, res) {
+
+  var subject = req.body.subject;
+  var message = req.body.message;
+  var mid = req.params.mid;
+
+  var messages = req.db.get('messages');
+
+  var date = new Date();
+
+
+  if (req.body.to) {
+    var user_to = req.body.to;
+    var users = req.db.get('users');
+
+    users.findById(user_to, function (err, user) {
+      messages.updateById(mid, {$set: {subject: subject, message: message, to: user}}, function (err, doc) {
+        messages.findById(mid, function(err, message){
+          notifications.create(req, {
+            type: "fa fa-envelope-o",
+            to: user._id,
+            message: "Bericht van " + message.from.username,
+            link: "/messages/detail/" + message._id,
+            seen: false,
+            date: date.toJSON(),
+            showOnDesktop: false
+          }, function () {
+            // redirect to the homepage
+            res.redirect("/");
+          });
+        });
+      });
+    });
+  } else {
+    messages.updateById(mid, {$set: {subject: subject, message: message}}, function (err, doc) {
+      res.redirect('/');
+    });
+  }
+
+
 };

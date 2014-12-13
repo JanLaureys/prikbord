@@ -38,9 +38,15 @@ mixin message(message, user, showComments)
               i.fa.fa-flag.fa-fw
               | &nbsp; Afhandelen
           else
-            span.pull-right
+            a.btn.pull-right.disabled
               i.fa.fa-flag.fa-fw
               | &nbsp; Nog niet afgehandeld
+      if(message.from)
+        if(message.from._id == user._id)
+          span.pull-right &nbsp;&nbsp;
+          a.pull-right.btn.btn-default(data-action="edit", href="/messages/edit/#{message._id}")
+            i.fa.fa-pencil.fa-fw
+            | &nbsp; Bewerken
     -var commentClass = (showComments && showComments == true ? 'collapse in' : 'collapse')
     .panel-footer(id="comments-#{message._id}",class=commentClass)
       .row

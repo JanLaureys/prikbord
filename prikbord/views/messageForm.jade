@@ -8,20 +8,11 @@ block content
       form(method="post")
         div.row
           div.form-group-lg.col-lg-6
-            input(type="text", placeholder="Geef hier een onderwerp in", name="subject").form-control #{message.subject}
+            input(type="text", placeholder="Geef hier een onderwerp in", name="subject", value="#{message.subject}").form-control
+            br
         div.row
           div.form-group-lg.col-lg-6
             textarea(name="message", placeholder="Schrijf hier uw bericht").form-control #{message.message}
-        br
-        div.form-group-lg
-          label Aan
-          br
-          div.btn-group(data-toggle="buttons")
-            each user, i in users
-              label.btn.btn-default
-                input(type="radio", name="to", value="#{user._id}")
-                i.fa.fa-user
-                | &nbsp; #{user.username}
         br
         div.row
           div.col-lg-12

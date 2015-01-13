@@ -55,9 +55,10 @@ $(function() {
       console.log(data);
       if(data.error){
         $this.removeClass('btn-default').addClass('btn-error').text('Er ging iets mis');
-       console.log('Some error happened');
       } else {
         $this.removeClass('btn-defult').addClass('btn-success').html('<i class="fa fa-check fa-fw"></i>&nbsp; Afgehandeld');
+        $this.closest('.panel-info').removeClass('panel-info').addClass('panel-default');
+        $this.closest('.panel-danger').removeClass('panel-danger').addClass('panel-default');
       }
     });
   });

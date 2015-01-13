@@ -3,6 +3,7 @@ block content
   .row
     .col-lg-12
       h1.page-header Bericht bewerken
+
   .row
     .col-lg-12
       form(method="post")
@@ -19,5 +20,12 @@ block content
             input.datepicker(name="date", type="text", placeholder="Datum waarop uw bericht geplaatst wordt", value="#{moment(message.date).format('dd/mm/yyyy')}").form-control
         br
         div.row
-          div.col-lg-12
+          div.form.group-lg.col-lg-6
+            input(type="checkbox", value="#{message.important}", name="important")
+            span &nbsp;&nbsp;Belangrijk
+        br
+        div.row
+          div.col-lg-6
             button(type="submit").btn.btn-primary Verzenden
+            button(type="submit", value="delete").btn.btn-default.pull-right Bericht verwijderen
+

@@ -2,7 +2,14 @@ mixin link(goto)
   a(href=goto) Banaan
 
 mixin message(message, user, showComments)
-  .panel.panel-info.message(data-message="#{message._id}")
+
+  -var important = "panel-info";
+  -if(message.important)
+    - important = "panel-danger";
+  -if(message.resolved)
+    - important = "panel-default";
+
+  .panel.message(data-message="#{message._id}", class="#{important}")
     .panel-heading
       strong &nbsp;#{message.from.username}
       if(message.to)

@@ -27,6 +27,11 @@ exports.new = {
 
     // Get our form values. These rely on the "name" attributes
     var message = req.body.message;
+    var imp = req.body.important;
+    var important = false;
+    if(imp){
+      important = true;
+    }
     var messages = db.get('messages');
 
     var receivedDate = req.body.date;
@@ -63,7 +68,8 @@ exports.new = {
         from: req.session.user,
         date: date.toJSON(),
         resolved: false,
-        message: message
+        message: message,
+        important: important
       };
       insertMessage(fields);
     }
@@ -213,12 +219,19 @@ exports.update = function (req, res) {
 
   var subject = req.body.subject;
   var message = req.body.message;
+  var important = req.body.important;
   var mid = req.params.mid;
 
   var messages = req.db.get('messages');
 
   var receivedDate = req.body.date;
   var date = new Date();
+
+  var imp = req.body.important;
+  var important = false;
+  if(imp){
+    important = true;
+  }
 
   if(date){
     // Parse the date
@@ -251,7 +264,7 @@ exports.update = function (req, res) {
       });
     });
   } else {
-    messages.updateById(mid, {$set: {subject: subject, message: message, date: date.toJSON()}}, function (err, doc) {
+    messages.updateById(mid, {$set: {subject: subject, message: message, date: date.toJSON(), important: important}}, function (err, doc) {
       res.redirect('/');
     });
   }

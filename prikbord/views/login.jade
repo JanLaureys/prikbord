@@ -37,18 +37,6 @@ html(lang='en')
                 a.list-group-item(href="/login/#{user._id}")
                   i.fa.fa-user
                   | &nbsp; #{user.username}
-          .col-lg-6
-            h1 Administrator
-            br
-            .panel.panel-default
-              .panel-heading Aanmelden als admin
-              .panel-body
-                form(role="form", method="POST", action="/login/admin")
-                  if(error)
-                    .alert.alert-danger #{error}
-                  .form-group
-                    input(type="password", name="admin", placeholder="Admin wachtwoord").form-control
-                  button(type="submit").btn.btn-default Aanmelden
 
 
 

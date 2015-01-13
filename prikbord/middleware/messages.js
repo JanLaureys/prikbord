@@ -29,7 +29,15 @@ exports.new = {
     var message = req.body.message;
     var messages = db.get('messages');
 
+    var receivedDate = req.body.date;
     var date = new Date();
+
+    if(date){
+      // Parse the date
+      var now = moment();
+      date = moment(receivedDate, "DD/MM/YYYY").add(now.hour(), 'hours').add(now.minute(), 'minutes');
+      date = date.toDate();
+    }
 
     if (req.body.to) {
       var user_to = req.body.to;
@@ -174,13 +182,6 @@ exports.edit = function (req, res) {
   });
 };
 
-exports.editSubmit = function (req, res) {
-  var messages = req.db.get('messages');
-  var mid = req.params.mid;
-  var user = req.session.user;
-  var date = new Date();
-};
-
 exports.comments = {
 
   add: function (req, res) {
@@ -216,7 +217,15 @@ exports.update = function (req, res) {
 
   var messages = req.db.get('messages');
 
+  var receivedDate = req.body.date;
   var date = new Date();
+
+  if(date){
+    // Parse the date
+    var now = moment();
+    date = moment(receivedDate, "DD/MM/YYYY").add(now.hour(), 'hours').add(now.minute(), 'minutes');
+    date = date.toDate();
+  }
 
 
   if (req.body.to) {
@@ -242,7 +251,7 @@ exports.update = function (req, res) {
       });
     });
   } else {
-    messages.updateById(mid, {$set: {subject: subject, message: message}}, function (err, doc) {
+    messages.updateById(mid, {$set: {subject: subject, message: message, date: date.toJSON()}}, function (err, doc) {
       res.redirect('/');
     });
   }

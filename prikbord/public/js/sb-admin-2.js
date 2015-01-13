@@ -127,10 +127,20 @@ $(function() {
   // Desktop notifications and shit
 
   $('input.datepicker').each(function(){
-    $(this).datepicker();
+    var datePicker = $(this).datepicker({
+      format: "dd/mm/yyyy",
+      weekStart: 1,
+      language: "nl-BE",
+      forceParse: false,
+      todayBtn: "linked",
+      todayHighlight: true
+    }).on('changeDate', function(e){
+      var date = e.date;
+      $.cookie('date', date.toJSON(), {expires: 1});
+      // TODO: Reload messages
+      if($('.page-messages').length > 0){
+        document.location.reload(true);
+      }
+    });
   });
-
-
-
-
 });

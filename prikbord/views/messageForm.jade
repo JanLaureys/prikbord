@@ -15,5 +15,9 @@ block content
             textarea(name="message", placeholder="Schrijf hier uw bericht").form-control #{message.message}
         br
         div.row
+          div.form.group-lg.col-lg-6
+            input.datepicker(name="date", type="text", placeholder="Datum waarop uw bericht geplaatst wordt", value="#{moment(message.date).format('dd/mm/yyyy')}").form-control
+        br
+        div.row
           div.col-lg-12
             button(type="submit").btn.btn-primary Verzenden

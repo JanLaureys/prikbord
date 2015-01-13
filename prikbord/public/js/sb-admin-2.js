@@ -1,5 +1,4 @@
 $(function() {
-
     $('#side-menu').metisMenu();
 });
 
@@ -125,9 +124,13 @@ $(function() {
   };
 
   poll();
-
-
   // Desktop notifications and shit
+
+  $('input.datepicker').each(function(){
+    $(this).datepicker();
+  });
+
+
 
 
 });

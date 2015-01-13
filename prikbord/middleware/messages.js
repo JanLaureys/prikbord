@@ -216,57 +216,62 @@ exports.comments = {
 };
 
 exports.update = function (req, res) {
-
-  var subject = req.body.subject;
-  var message = req.body.message;
-  var important = req.body.important;
-  var mid = req.params.mid;
-
   var messages = req.db.get('messages');
-
-  var receivedDate = req.body.date;
-  var date = new Date();
-
-  var imp = req.body.important;
-  var important = false;
-  if(imp){
-    important = true;
-  }
-
-  if(date){
-    // Parse the date
-    var now = moment();
-    date = moment(receivedDate, "DD/MM/YYYY").add(now.hour(), 'hours').add(now.minute(), 'minutes');
-    date = date.toDate();
-  }
+  if(req.body.delete){
+    var message = req.params.mid;
+    messages.remove({'_id': message});
+    res.redirect('/');
+  } else {
+    var subject = req.body.subject;
+    var message = req.body.message;
+    var important = req.body.important;
+    var mid = req.params.mid;
 
 
-  if (req.body.to) {
-    var user_to = req.body.to;
-    var users = req.db.get('users');
+    var receivedDate = req.body.date;
+    var date = new Date();
 
-    users.findById(user_to, function (err, user) {
-      messages.updateById(mid, {$set: {subject: subject, message: message, to: user}}, function (err, doc) {
-        messages.findById(mid, function(err, message){
-          notifications.create(req, {
-            type: "fa fa-envelope-o",
-            to: user._id,
-            message: "Bericht van " + message.from.username,
-            link: "/messages/detail/" + message._id,
-            seen: false,
-            date: date.toJSON(),
-            showOnDesktop: false
-          }, function () {
-            // redirect to the homepage
-            res.redirect("/");
+    var imp = req.body.important;
+    var important = false;
+    if(imp){
+      important = true;
+    }
+
+    if(date){
+      // Parse the date
+      var now = moment();
+      date = moment(receivedDate, "DD/MM/YYYY").add(now.hour(), 'hours').add(now.minute(), 'minutes');
+      date = date.toDate();
+    }
+
+
+    if (req.body.to) {
+      var user_to = req.body.to;
+      var users = req.db.get('users');
+
+      users.findById(user_to, function (err, user) {
+        messages.updateById(mid, {$set: {subject: subject, message: message, to: user}}, function (err, doc) {
+          messages.findById(mid, function(err, message){
+            notifications.create(req, {
+              type: "fa fa-envelope-o",
+              to: user._id,
+              message: "Bericht van " + message.from.username,
+              link: "/messages/detail/" + message._id,
+              seen: false,
+              date: date.toJSON(),
+              showOnDesktop: false
+            }, function () {
+              // redirect to the homepage
+              res.redirect("/");
+            });
           });
         });
       });
-    });
-  } else {
-    messages.updateById(mid, {$set: {subject: subject, message: message, date: date.toJSON(), important: important}}, function (err, doc) {
-      res.redirect('/');
-    });
+    } else {
+      messages.updateById(mid, {$set: {subject: subject, message: message, date: date.toJSON(), important: important}}, function (err, doc) {
+        res.redirect('/');
+      });
+    }
   }
 
 

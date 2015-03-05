@@ -13,9 +13,10 @@ exports.new = {
 
     var db = req.db;
     var collection = db.get('users');
+    var user = req.session.user;
 
     collection.find({}, function (e, docs) {
-      res.render('post', {"title": "Een nieuw bericht sturen", users: docs});
+      res.render('post', {"title": "Een nieuw bericht sturen", users: docs, moment: moment, user: user});
     });
   },
   post: function (req, res) {

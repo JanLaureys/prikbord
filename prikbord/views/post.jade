@@ -16,7 +16,7 @@ block content
         br
         div.row
           div.form.group-lg.col-lg-6
-            input.datepicker(name="date", type="text", placeholder="Datum waarop uw bericht geplaatst wordt").form-control
+            input.datepicker(name="date", type="text", placeholder="Datum waarop uw bericht geplaatst wordt", value="#{moment().format('dd/mm/yyyy')}").form-control
         br
         div.row
           div.form.group-lg.col-lg-6
@@ -27,11 +27,17 @@ block content
           label Aan
           br
           div.btn-group(data-toggle="buttons")
-            each user, i in users
-              label.btn.btn-default
-                input(type="radio", name="to", value="#{user._id}")
-                i.fa.fa-user
-                | &nbsp; #{user.username}
+            each recipient, i in users
+              if user._id == recipient._id
+                label.btn.btn-default.active
+                  input(type="radio", name="to", value="#{recipient._id}", checked)
+                  i.fa.fa-user
+                  | &nbsp; #{recipient.username}
+              else
+                label.btn.btn-default
+                  input(type="radio", name="to", value="#{recipient._id}")
+                  i.fa.fa-user
+                  | &nbsp; #{recipient.username}
         br
         div.row
           div.col-lg-12

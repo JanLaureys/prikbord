@@ -38,11 +38,14 @@ exports.new = {
     var receivedDate = req.body.date;
     var date = new Date();
 
-    if(date){
+    if(receivedDate){
       // Parse the date
       var now = moment();
       date = moment(receivedDate, "DD/MM/YYYY").add(now.hour(), 'hours').add(now.minute(), 'minutes');
       date = date.toDate();
+    } else {
+      var now = moment();
+      date = now.toDate();
     }
 
     if (req.body.to) {

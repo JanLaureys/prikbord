@@ -129,7 +129,7 @@ $(function() {
 
   $('input.datepicker').each(function(){
     var datePicker = $(this).datepicker({
-      format: "dd/mm/yyyy",
+      format: "dd/mm/YYYY",
       weekStart: 1,
       language: "nl-BE",
       forceParse: false,
